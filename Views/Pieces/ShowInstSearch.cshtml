@@ -1,0 +1,44 @@
+﻿@model CGMD.Models.Piece
+
+<h4>Search works by Instrumentation</h4>
+<hr />
+<div class="row">
+
+    <div class="col-md-4">
+        <form asp-action="ShowInstResults">
+            <br>
+
+            <select name="SearchPhrase">
+                <option value="">Select Instrumentation</option>
+                <option value="solo">Guitar Solo</option>
+                <option value="duo">Guitar Duo</option>
+                <option value="trio trio">Guitar Trio</option>
+                <option value="quartet">Guitar Quartet</option>
+                <option value="5+">Large Guitar Ensemble</option>
+                <option value="orchestra">Orchestra and Guitar</option>
+                <option value="violin">Violin and Guitar</option>
+                <option value="flute">Flute and Guitar</option>
+                <option value="piano">Piano and Guitar</option>
+                <option value="voice">Voice and Guitar</option>
+                <option value="viola">Viola and Guitar</option>
+                <option value="cello">Cello and Guitar</option>
+                <option value="mandolin">Mandolin and Guitar</option>
+                <option value="terz">Terz-Guitar and Guitar</option>
+                <option value="csakan">Csakan and Guitar</option>
+
+               
+            </select><br>
+            <br>
+            <div class="form-group">
+                <input type="submit" value="Search" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<div>
+    <br>
+    <a asp-action="Index">Back to List</a>
+</div>
+

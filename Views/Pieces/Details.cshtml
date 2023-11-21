@@ -1,0 +1,77 @@
+﻿@model CGMD.Models.Piece
+
+@{
+    ViewData["Title"] = Model.Work;
+}
+
+<h1>Details</h1>
+
+<div>
+      <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Composer)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Composer)
+        </dd>
+        <dt class = "col-sm-2">
+            Year of Birth
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.YOB)
+        </dd>
+        <dt class = "col-sm-2">
+           Year of Death
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.YOD)
+        </dd>
+        <dt class = "col-sm-2">
+            Nationality
+        </dt>
+        <dd class = "col-sm-10">          
+            @Html.DisplayFor(model => model.Nation)
+        </dd>
+        <dt class = "col-sm-2">
+            Title
+        </dt>
+        <dd class = "col-sm-10">
+            <em>@Html.DisplayFor(model => model.Work)</em>
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Tags)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Tags)
+        </dd>
+        <dt class = "col-sm-2">
+            Instrumentation
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Inst)
+        </dd>
+        <dt class = "col-sm-2">
+            Key(s)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.keyOf)
+        </dd>
+        <dt class="col-sm-2">
+            Video URL
+        </dt>
+        <dd class="col-sm-10">
+            <a href="@Html.DisplayFor(model => model.Video)" target="_blank">@Html.DisplayFor(model => model.Video)</a>
+        </dd>
+
+        <dt class="col-sm-2">
+            Score URL
+        </dt>
+        <dd class="col-sm-10">
+            <a href="@Html.DisplayFor(model => model.Score)" target="_blank">@Html.DisplayFor(model => model.Score)</a>
+        </dd>
+    </dl>
+</div>
+<div>
+
+    <a asp-action="Index">Back to List</a>
+</div>

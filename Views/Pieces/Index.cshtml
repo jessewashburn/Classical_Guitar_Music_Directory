@@ -1,0 +1,78 @@
+﻿@model IEnumerable<CGMD.Models.Piece>
+
+@{
+    ViewData["Title"] = "Index";
+    var currentSort = ViewData["CurrentSort"] as string;
+    var searchPhrase = ViewData["SearchPhrase"] as string;
+}
+
+<h2>Repertoire</h2>
+
+@if (!string.IsNullOrEmpty(searchPhrase))
+{
+    <div class="search-message">
+        Showing results for '<strong>@searchPhrase</strong>'
+    </div>
+}
+
+<div align="right">
+    <form asp-controller="Pieces" asp-action="Index" method="get">
+        <input type="hidden" name="searchPhrase" value="@searchPhrase" />
+        <label for="sortOrder">Sort by:</label>
+        <select name="sortOrder" class="form-control" id="sortOrderSelect" onchange="this.form.submit()">
+            <option value="YOB_DESC">Reverse Chronological (default)</option>
+            <option value="YOB_ASC">Chronological</option>
+            <option value="Composer_ASC">Composer Last Name A-Z</option>
+            <option value="Composer_DESC">Composer Last Name Z-A</option>
+        </select>
+        <br />
+        <button type="submit" class="btn btn-primary">Sort</button>
+    </form>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Composer
+            </th>
+            <th>
+                Year of Birth
+            </th>
+            <th>
+                Title
+            </th>
+            <th></th> <!-- Placeholder for Details link or other actions -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model) // Just use Model here, not Model.Pieces
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Composer)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.YOB)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Work)
+                </td>
+                <td>
+                    <!-- Assuming you have a details action -->
+                    <a asp-action="Details" asp-route-id="@item.ID">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var sortOrderSelect = document.getElementById("sortOrderSelect");
+        if (currentSort) {
+            sortOrderSelect.value = currentSort;
+        }
+    });
+</script>

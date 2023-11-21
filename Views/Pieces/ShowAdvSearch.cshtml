@@ -1,0 +1,110 @@
+﻿@model CGMD.Models.AdvancedSearchModel
+
+@{
+    ViewData["Title"] = "Advanced Search";
+}
+
+<h4>Advanced Search</h4>
+<hr />
+<div class="row">
+
+    <div class="col-md-8">
+        <form asp-action="ShowAdvResults" method="post">
+            <!-- Title Search -->
+            <div class="form-group">
+                <label asp-for="Title" class="control-label">Title Contains:</label>
+                <input asp-for="Title" class="form-control" />
+            </div>
+            <br/>
+
+            <!-- Composer Search -->
+            <div class="form-group">
+                <label asp-for="Composer" class="control-label">Composer Name Contains:</label>
+                <input asp-for="Composer" class="form-control" />
+            </div>
+            <br/>
+
+            <!-- Year of Birth Range Search -->
+            <div class="form-group">
+                <label asp-for="MinYOB" class="control-label">Born Between:</label>
+                <input asp-for="MinYOB" class="form-control" placeholder="Min Year (inclusive)" />
+                <span>and</span>
+                <input asp-for="MaxYOB" class="form-control" placeholder="Max Year (inclusive)" />
+            </div>
+
+
+            <!-- Instrumentation Search -->
+            <div class="form-group">
+                <label asp-for="Inst" class="control-label">Select Instrumentation:</label>
+                <select asp-for="Inst" class="form-control">
+                    <option value="">Select Instrumentation</option>
+                    <option value="solo">Guitar Solo</option>
+                    <option value="duo">Guitar Duo</option>
+                    <option value="trio">Guitar Trio</option>
+                    <option value="quartet">Guitar Quartet</option>
+                    <option value="5+">Large Guitar Ensemble</option>
+                    <option value="orchestra">Orchestra and Guitar</option>
+                    <option value="violin">Violin and Guitar</option>
+                    <option value="flute">Flute and Guitar</option>
+                    <option value="piano">Piano and Guitar</option>
+                    <option value="voice">Voice and Guitar</option>
+                    <option value="viola">Viola and Guitar</option>
+                    <option value="cello">Cello and Guitar</option>
+                    <option value="mandolin">Mandolin and Guitar</option>
+                    <option value="terz">Terz-Guitar and Guitar</option>
+                    <option value="csakan">Csakan and Guitar</option>
+                </select>
+            </div>
+            <br />
+
+            <!-- Key Search -->
+            <div class="form-group">
+                <label asp-for="keyOf" class="control-label">Select a Key:</label>
+                <select asp-for="keyOf" class="form-control">
+                    <option value="">Select a Key</option>
+                    @{
+                        var keys = new List<string> { "C", "C#/Db", "D", "D#/Eb", "E", "F", "F#/Gb", "G", "G#/Ab", "A", "A#/Bb", "B" };
+                        foreach (var key in keys)
+                        {
+                            <option value="@key major">@key major</option>
+                            <option value="@key minor">@key minor</option>
+                        }
+                    }
+                </select>
+                <br />
+            </div>
+
+
+
+            <!-- Nationality Search -->
+            <div class="form-group">
+                <label asp-for="Nation" class="control-label">Select Nationality:</label>
+                <select asp-for="Nation" class="form-control">
+                    <option value="">Select Nationality</option>
+                    <option value="Spain">Spain</option>
+                    <option value="Italy">Italy</option>
+                    <option value="Austria">Austria</option>
+                    <!-- Add other nationality options as needed -->
+                </select>
+                <br />
+            </div>
+
+            <!-- Submit -->
+            <br />
+            <div class="form-group">
+                <input type="submit" value="Search" class="btn btn-primary" />
+            </div>
+            <br />
+        </form>
+    </div>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
