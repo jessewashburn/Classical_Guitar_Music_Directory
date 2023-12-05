@@ -47,15 +47,4 @@ Start the Application:
 Access the Application:
      The application will typically start at http://localhost:port where port is dynamically assigned by IIS Express.
 
-Create a Database:
-    Use Microsoft SQL Server to create a new database for the application.
-    Alternatively, tools like Azure Data Studio or SQL Server Management Studio (SSMS) can be used.
-
- Configure the Connection String:
-     Update the connection string in appsettings.json to point to your newly created database.
-
-Database Migration:
-     In Visual Studio, use the Package Manager Console to update the database:
-    Update-Database
-
 
