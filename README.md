@@ -11,43 +11,57 @@ User-Friendly Interface: A clean and intuitive interface ensures ease of navigat
 
 .NET Core SDK
 ASP.NET Runtime
-Microsoft SQL Server (Other SQL database management tools can be compatible)
-Installation
+Visual Studio with ASP.NET and web development workload (other IDEs can also be used)
+Microsoft SQL Server (Other SQL database management tools can also be used)
+    
+**Installation**
 
 Clone the Repository:
-
-bash
 
 git clone https://github.com/your-repository/classical-guitar-directory.git
 
 Navigate to the Application Directory:
 
-bash
 
 cd classical-guitar-directory
 
 **Database Setup**
 
-Create a Database:
+    Create a Database:
+        Use Microsoft SQL Server to create a new database for the application.
+        Alternatively, tools like Azure Data Studio or SQL Server Management Studio (SSMS) can be used.
 
-Use Microsoft SQL Server (or other app) to create a new database for the application.
-Database Migration:
-Update the connection string in appsettings.json to point to your database.
-Use Entity Framework Core to update the database:
-sql
-dotnet ef database update
+    Configure the Connection String:
+        Update the connection string in appsettings.json to point to your newly created database.
 
-Running the Application
-Run the Application:
-arduino
-dotnet run
+    Database Migration:
+        In Visual Studio, use the Package Manager Console to update the database:
 
-Access the Application:
-Open a web browser and navigate to http://localhost:5000 or the port specified in your environment.
-Contributing
-Contributions to the Classical Guitar Music Directory are welcome! Please read our contributing guidelines before submitting pull requests.
-License
-This project is licensed under the MIT License.
-Contact
-For any questions or feedback, please contact [Your Name] at [your-email@example.com].
+        mathematica
+
+        Update-Database
+
+**Running the Application**
+
+    Start the Application:
+        In Visual Studio, select IIS Express to run the application.
+        Visual Studio will build the application and open it in a web browser.
+
+    Access the Application:
+        The application will typically start at http://localhost:port where port is dynamically assigned by IIS Express.
+
+    Create a Database:
+        Use Microsoft SQL Server to create a new database for the application.
+        Alternatively, tools like Azure Data Studio or SQL Server Management Studio (SSMS) can be used.
+
+    Configure the Connection String:
+        Update the connection string in appsettings.json to point to your newly created database.
+
+    Database Migration:
+        In Visual Studio, use the Package Manager Console to update the database:
+
+        mathematica
+
+        Update-Database
+
 
