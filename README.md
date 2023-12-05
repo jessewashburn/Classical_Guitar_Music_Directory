@@ -27,36 +27,36 @@ cd classical-guitar-directory
 
 **Database Setup**
 
-    Create a Database:
-        Use Microsoft SQL Server to create a new database for the application.
-        Alternatively, tools like Azure Data Studio or SQL Server Management Studio (SSMS) can be used.
+Create a Database:
+     Use Microsoft SQL Server to create a new database for the application.
+    Alternatively, tools like Azure Data Studio or SQL Server Management Studio (SSMS) can be used.
 
-    Configure the Connection String:
-        Update the connection string in appsettings.json to point to your newly created database.
+Configure the Connection String:
+    Update the connection string in appsettings.json to point to your newly created database.
 
-    Database Migration:
-        In Visual Studio, use the Package Manager Console to update the database:
+ Database Migration:
+    In Visual Studio, use the Package Manager Console to update the database:
 
-        Update-Database
-
+     Update-Database
+     
 **Running the Application**
 
-    Start the Application:
-        In Visual Studio, select IIS Express to run the application.
-        Visual Studio will build the application and open it in a web browser.
+Start the Application:
+    In Visual Studio, select IIS Express to run the application.
+    Visual Studio will build the application and open it in a web browser.
 
-    Access the Application:
-        The application will typically start at http://localhost:port where port is dynamically assigned by IIS Express.
+Access the Application:
+     The application will typically start at http://localhost:port where port is dynamically assigned by IIS Express.
 
-    Create a Database:
-        Use Microsoft SQL Server to create a new database for the application.
-        Alternatively, tools like Azure Data Studio or SQL Server Management Studio (SSMS) can be used.
+Create a Database:
+    Use Microsoft SQL Server to create a new database for the application.
+    Alternatively, tools like Azure Data Studio or SQL Server Management Studio (SSMS) can be used.
 
-    Configure the Connection String:
-        Update the connection string in appsettings.json to point to your newly created database.
+ Configure the Connection String:
+     Update the connection string in appsettings.json to point to your newly created database.
 
-    Database Migration:
-        In Visual Studio, use the Package Manager Console to update the database:
-        Update-Database
+Database Migration:
+     In Visual Studio, use the Package Manager Console to update the database:
+    Update-Database
 
 
