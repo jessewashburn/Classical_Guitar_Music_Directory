@@ -18,12 +18,11 @@ Microsoft SQL Server (Other SQL database management tools can also be used)
 
 Clone the Repository:
 
-git clone https://github.com/your-repository/classical-guitar-directory.git
+    git clone https://github.com/your-repository/classical-guitar-directory.git
 
 Navigate to the Application Directory:
 
-
-cd classical-guitar-directory
+    cd classical-guitar-directory
 
 **Database Setup**
 
