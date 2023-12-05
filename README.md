@@ -37,8 +37,6 @@ cd classical-guitar-directory
     Database Migration:
         In Visual Studio, use the Package Manager Console to update the database:
 
-        mathematica
-
         Update-Database
 
 **Running the Application**
@@ -59,9 +57,6 @@ cd classical-guitar-directory
 
     Database Migration:
         In Visual Studio, use the Package Manager Console to update the database:
-
-        mathematica
-
         Update-Database
 
 
