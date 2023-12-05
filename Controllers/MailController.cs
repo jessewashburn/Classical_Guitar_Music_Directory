@@ -8,6 +8,7 @@ public class MailController : Controller
     [HttpPost]
     public IActionResult Mail(ContactFormModel model)
     {
+        //TODO
         /*
         // Set the Gmail SMTP host and port
         using (var client = new SmtpClient("smtp.gmail.com", 465))

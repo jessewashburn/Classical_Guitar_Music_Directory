@@ -3,75 +3,107 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CGMD.Data;
 using CGMD.Models;
-using Microsoft.Data.SqlClient;
+using Newtonsoft.Json;
 
 namespace CGMD.Controllers
 {
+
+    /// <summary>
+    /// Controller for handling operations related to classical guitar pieces.
+    /// </summary>
+    /// 
     public class PiecesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PiecesController"/> class.
+        /// </summary>
+        /// <param name="context">The database context used for interacting with entity models.</param>
+        /// 
         public PiecesController(ApplicationDbContext context, ILogger<PiecesController> logger)
         {
             _context = context;
         }
 
-        // GET: Pieces
-        public async Task<IActionResult> Index(string sortOrder, bool clearSearch = false)
+        /// <summary>
+        /// Displays the list of pieces with optional sorting and search capabilities.
+        /// </summary>
+        /// <param name="sortOrder">The order in which to sort the pieces.</param>
+        /// <param name="searchPhrase">The search term to filter pieces.</param>
+        /// <param name="clearSearch">A flag indicating whether to clear the current search.</param>
+        /// <returns>The Index view populated with a list of pieces.</returns>
+        public async Task<IActionResult> Index(string sortOrder, string searchPhrase = "", bool clearSearch = false)
         {
-            // If clearSearch is true, clear the search criteria
             if (clearSearch)
             {
-                TempData["CurrentSearchPhrase"] = string.Empty;
+                HttpContext.Session.Remove("SearchModel");
+                return RedirectToAction(nameof(Index));
             }
 
-            ViewBag.CurrentSort = sortOrder;
+            sortOrder = string.IsNullOrEmpty(sortOrder) ? "YOB_DESC" : sortOrder;
+            ViewData["CurrentSort"] = sortOrder;
 
-            var query = _context.Piece.AsQueryable();
-
-            // Attempt to retrieve search criteria from TempData if not cleared
-            var searchPhrase = clearSearch ? string.Empty : TempData["CurrentSearchPhrase"] as string ?? string.Empty;
-
-            // Apply search based on the stored advanced search phrase
-            if (!string.IsNullOrEmpty(searchPhrase))
+            AdvancedSearchModel searchModel = new AdvancedSearchModel();
+            if (string.IsNullOrEmpty(searchPhrase))
             {
-                query = query.Where(p => p.Work.Contains(searchPhrase) || p.Composer.Contains(searchPhrase) || (p.Tags != null && p.Tags.Contains(searchPhrase)));
+                var searchModelJson = HttpContext.Session.GetString("SearchModel");
+                if (!string.IsNullOrEmpty(searchModelJson))
+                {
+                    searchModel = JsonConvert.DeserializeObject<AdvancedSearchModel>(searchModelJson) ?? new AdvancedSearchModel();
+                }
             }
-
-            // Apply sorting
-            switch (sortOrder)
+            else
             {
-                case "YOB_ASC":
-                    query = query.OrderBy(p => p.YOB);
-                    break;
-                case "YOB_DESC":
-                    query = query.OrderByDescending(p => p.YOB);
-                    break;
-                case "Composer_ASC":
-                    query = query.OrderBy(p => p.Composer);
-                    break;
-                case "Composer_DESC":
-                    query = query.OrderByDescending(p => p.Composer);
-                    break;
-                // Add more cases as needed for other sorting options
-                default:
-                    // Default to sorting by Year of Birth descending
-                    query = query.OrderByDescending(p => p.YOB);
-                    break;
+                searchModel.searchPhrase = searchPhrase;
+                HttpContext.Session.SetString("SearchModel", JsonConvert.SerializeObject(searchModel));
+            }
+            ViewData["SearchPhrase"] = searchModel?.searchPhrase;
+
+            // Build and execute the query
+            IQueryable<Piece> query = _context.Piece.AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchModel?.searchPhrase))
+            {
+                var searchTerms = searchModel.searchPhrase.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                query = searchTerms.Aggregate(query, (currentQuery, term) =>
+                    currentQuery.Where(p => p.Work.Contains(term) || p.Composer.Contains(term) || (p.Tags != null && p.Tags.Contains(term))));
             }
 
-            // Execute the query and retrieve the result
+            query = ApplySorting(query, sortOrder);
+
             var result = await query.ToListAsync();
-
-            // Return the result as a view
             return View(result);
         }
 
-        // GET: Pieces/Details/5
+
+        /// <summary>
+        /// Applies sorting to the query based on the specified sort order.
+        /// </summary>
+        /// <param name="query">The query to be sorted.</param>
+        /// <param name="sortOrder">The order in which to sort the query.</param>
+        /// <returns>The sorted query.</returns>
+        private IQueryable<Piece> ApplySorting(IQueryable<Piece> query, string sortOrder)
+        {
+            return sortOrder switch
+            {
+                "YOB_ASC" => query.OrderBy(p => p.YOB),
+                "YOB_DESC" => query.OrderByDescending(p => p.YOB),
+                "Composer_ASC" => query.OrderBy(p => p.Composer),
+                "Composer_DESC" => query.OrderByDescending(p => p.Composer),
+                _ => query.OrderByDescending(p => p.YOB), // Default sort order
+            };
+        }
+
+
+        /// <summary>
+        /// Displays details for a specific piece.
+        /// </summary>
+        /// <param name="id">The ID of the piece to display.</param>
+        /// <returns>The Details view for the specified piece.</returns>
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Piece == null)
@@ -89,66 +121,111 @@ namespace CGMD.Controllers
             return View(piece);
         }
 
-        // GET: Pieces/Create
+        /// <summary>
+        /// Displays the Create view for adding a new piece.
+        /// </summary>
+        /// <returns>The Create view.</returns>
         public IActionResult Create()
         {
             return View();
         }
 
-        // GET: Pieces/ShowSearchForm
+        /// <summary>
+        /// Displays the search form.
+        /// </summary>
+        /// <returns>The search form view.</returns>
         public IActionResult ShowSearchForm()
         {
             return View();
         }
 
-        // Post: Pieces/ShowSearchResults
+
+        /// <summary>
+        /// Performs a search based on the provided search phrase and displays the results.
+        /// </summary>
+        /// <param name="searchPhrase">The search term used to filter the results.</param>
+        /// <returns>The Index view populated with search results.</returns>
         public async Task<IActionResult> ShowSearchResults(String searchPhrase)
         {
-            return View("Index", await _context.Piece.Where(p => p.Work.Contains(searchPhrase) || p.Composer.Contains(searchPhrase) || (p.Tags != null && p.Tags.Contains(searchPhrase))).ToListAsync());
+            // Set the search phrase to ViewData to be displayed in the view
+            ViewData["SearchPhrase"] = searchPhrase;
+
+            // Perform the search and pass the result to the view
+            var result = await _context.Piece
+                .Where(p => p.Work.Contains(searchPhrase) || p.Composer.Contains(searchPhrase) || (p.Tags != null && p.Tags.Contains(searchPhrase)))
+                .ToListAsync();
+
+            return View("Index", result);
         }
 
-        // GET: Pieces/ShowAdvSearch
+        /// <summary>
+        /// Displays the advanced search form.
+        /// </summary>
+        /// <returns>The advanced search form view.</returns>
         public IActionResult ShowAdvSearch()
         {
-            return View();
+            // Retrieve the advanced search model from session if it exists
+            var searchModelJson = HttpContext.Session.GetString("AdvancedSearchCriteria");
+            var searchModel = string.IsNullOrEmpty(searchModelJson) ?
+                new AdvancedSearchModel() :
+                JsonConvert.DeserializeObject<AdvancedSearchModel>(searchModelJson);
+
+            // Pass the model to the view to make the form sticky
+            return View(searchModel);
         }
 
+
+        /// <summary>
+        /// Displays the search results based on advanced search criteria.
+        /// </summary>
+        /// <param name="model">The model containing the advanced search criteria.</param>
+        /// <param name="sortOrder">The order in which to sort the results.</param>
+        /// <returns>The Index view populated with advanced search results.</returns>
+ 
         [HttpPost]
-        public async Task<IActionResult> ShowAdvResults(AdvancedSearchModel model, bool clearSearch = false)
+        public IActionResult ShowAdvResults(AdvancedSearchModel model, string sortOrder)
         {
-            // If clearSearch is true, clear the search criteria
-            if (clearSearch)
-            {
-                TempData["CurrentSearchPhrase"] = string.Empty;
-            }
-            else
-            {
-                // If the form was submitted with a search, use the form's searchPhrase
-                TempData["CurrentSearchPhrase"] = model.searchPhrase;
-            }
+            // Store the search model in Session
+            HttpContext.Session.SetString("AdvancedSearchCriteria", JsonConvert.SerializeObject(model));
 
             // Build the query based on the advanced search criteria
             var query = BuildQueryBasedOnSearchCriteria(model);
 
+            // Include the sortOrder in the ViewData to maintain the sort order on postback
+            ViewData["CurrentSort"] = sortOrder;
+
             // Execute the query and return the Index view with results
-            var result = await query.ToListAsync();
+            var result = query.ToList(); // Use ToList instead of ToListAsync
             return View("Index", result);
         }
 
-        //end advSearchResults
-
+        /// <summary>
+        /// Checks if a Piece with a given ID exists in the database.
+        /// </summary>
+        /// <param name="id">The ID of the piece to check.</param>
+        /// <returns>True if the piece exists, otherwise false.</returns>
         private bool PieceExists(int id)
         {
             return _context.Piece.Any(e => e.ID == id);
         }
 
+        /// <summary>
+        /// Handles the POST request for confirming the submission of a new piece.
+        /// Displays a confirmation page after a piece is successfully submitted.
+        /// </summary>
+        /// <param name="piece">The Piece object that has been submitted.</param>
+        /// <returns>A view displaying confirmation of the submitted piece.</returns>
         [HttpPost]
         public IActionResult PostConf(Piece piece)
         {
             return View();
         }
 
-        // Helper method to build search phrase based on advanced search criteria
+        /// <summary>
+        /// Builds a search phrase based on the advanced search criteria.
+        /// </summary>
+        /// <param name="model">The model containing the advanced search criteria.</param>
+        /// <returns>The constructed search phrase.</returns>
         private string BuildSearchPhrase(AdvancedSearchModel model)
         {
             var phrases = new List<string>();
@@ -158,15 +235,36 @@ namespace CGMD.Controllers
             return string.Join(" ", phrases);
         }
 
-        // Helper method to build query based on advanced search criteria
+        /// <summary>
+        /// Builds a query based on the provided advanced search criteria.
+        /// </summary>
+        /// <param name="model">The model containing the advanced search criteria.</param>
+        /// <returns>An IQueryable representing the filtered query.</returns>
         private IQueryable<Piece> BuildQueryBasedOnSearchCriteria(AdvancedSearchModel model)
         {
             var query = _context.Piece.AsQueryable();
 
             // Apply filters based on the model properties
             if (!string.IsNullOrEmpty(model.Title))
-                query = query.Where(p => p.Work.Contains(model.Title));
+            {
+                // Split the search phrases by space to search for each word
+                var searchPhrases = model.Title.Split(' ');
+                query = query.Where(p => p.Work.Contains(model.Title) ||
+                                    p.Composer.Contains(model.Title) ||
+                                    (p.Tags != null && p.Tags.Contains(model.Title)));
+            }
 
+            //Apply filters for tags 
+            if (!string.IsNullOrEmpty(model.Tags))
+            {
+                // Force client-side evaluation with ToList().
+                var piecesWithTags = query.ToList().Where(p => p.Tags != null &&
+                    model.Tags.Split(' ').Any(tag => p.Tags.Contains(tag)));
+                // Re-create the IQueryable from the filtered list.
+                query = piecesWithTags.AsQueryable();
+            }
+            
+            //Apply filter for composers
             if (!string.IsNullOrEmpty(model.Composer))
                 query = query.Where(p => p.Composer.Contains(model.Composer));
 
@@ -198,7 +296,32 @@ namespace CGMD.Controllers
                 query = query.Where(p => !string.IsNullOrEmpty(p.Nation) && p.Nation.Contains(model.Nation));
             }
 
+            // Filter by score availability
+            if (model.HasScore)
+            {
+                query = query.Where(p => !string.IsNullOrEmpty(p.Score));
+            }
+
+            // Filter by recording availability
+            if (model.HasRecording)
+            {
+                query = query.Where(p => !string.IsNullOrEmpty(p.Video));
+            }
+
             return query;
+        }
+
+        /// <summary>
+        /// Clears the current search criteria from the session and redirects to the Index action.
+        /// </summary>
+        /// <returns>A redirection to the Index action.</returns>
+        public IActionResult ClearSearchAndRedirectToIndex()
+        {
+            // Clear search criteria from Session
+            HttpContext.Session.Remove("AdvancedSearchCriteria");
+
+            // Redirect to Index action
+            return RedirectToAction(nameof(Index));
         }
     }
 }

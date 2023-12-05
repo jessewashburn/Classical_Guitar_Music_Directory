@@ -1,61 +1,81 @@
 ﻿@model CGMD.Models.Piece
 
 @{
+    // Set the title of the page based on the piece's work
     ViewData["Title"] = Model.Work;
 }
 
+<!-- Header displaying 'Details' -->
 <h1>Details</h1>
 
+<!-- Detail view section for the piece -->
 <div>
-      <dl class="row">
-        <dt class = "col-sm-2">
+    <dl class="row">
+        <!-- Composer detail -->
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Composer)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Composer)
         </dd>
-        <dt class = "col-sm-2">
+
+        <!-- Year of Birth detail -->
+        <dt class="col-sm-2">
             Year of Birth
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.YOB)
         </dd>
-        <dt class = "col-sm-2">
-           Year of Death
+
+        <!-- Year of Death detail -->
+        <dt class="col-sm-2">
+            Year of Death
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.YOD)
         </dd>
-        <dt class = "col-sm-2">
+
+        <!-- Nationality detail -->
+        <dt class="col-sm-2">
             Nationality
         </dt>
-        <dd class = "col-sm-10">          
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Nation)
         </dd>
-        <dt class = "col-sm-2">
+
+        <!-- Title detail -->
+        <dt class="col-sm-2">
             Title
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             <em>@Html.DisplayFor(model => model.Work)</em>
         </dd>
-        <dt class = "col-sm-2">
+
+        <!-- Tags detail -->
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Tags)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Tags)
         </dd>
-        <dt class = "col-sm-2">
+
+        <!-- Instrumentation detail -->
+        <dt class="col-sm-2">
             Instrumentation
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Inst)
         </dd>
-        <dt class = "col-sm-2">
+
+        <!-- Key(s) detail -->
+        <dt class="col-sm-2">
             Key(s)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.keyOf)
         </dd>
+
+        <!-- Video URL detail -->
         <dt class="col-sm-2">
             Video URL
         </dt>
@@ -63,6 +83,7 @@
             <a href="@Html.DisplayFor(model => model.Video)" target="_blank">@Html.DisplayFor(model => model.Video)</a>
         </dd>
 
+        <!-- Score URL detail -->
         <dt class="col-sm-2">
             Score URL
         </dt>
@@ -71,7 +92,8 @@
         </dd>
     </dl>
 </div>
-<div>
 
+<!-- Link to navigate back to the list of pieces -->
+<div>
     <a asp-action="Index">Back to List</a>
 </div>

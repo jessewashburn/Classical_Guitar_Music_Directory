@@ -1,38 +1,42 @@
 ﻿@model CGMD.Models.Piece
 
 @{
+    // Set the title of the search page.
     ViewData["Title"] = "Search";
 }
 
+<!-- Heading for the Search Page -->
 <h1>Search</h1>
-<h6>Filter works by composer, title, or tags</h6>
+<h6>Instructions or description about filtering works by composer, title, or tags.</h6>
 <hr />
-<div class="row">
 
-   <div class="col-md-12">
+<!-- Search Form Section -->
+<div class="row">
+    <div class="col-md-12">
+        <!-- Form for submitting a search query -->
         <form asp-action="ShowSearchResults">
-           
+            <!-- Search Phrase Input -->
             <div class="form-group">
-                <label for="SearchPhrase" class="control-label"></label>
-                <input name="SearchPhrase" class="form-control" />
-                
+                <label for="SearchPhrase" class="control-label">Enter search terms here</label>
+                <input name="SearchPhrase" class="form-control" placeholder="Type search terms..." />
             </div>
-           <br />
+            <br />
+
+            <!-- Submit Button -->
             <div class="form-group">
                 <input type="submit" value="Search" class="btn btn-primary" />
             </div>
             <br>
         </form>
-   </div>
-   
+    </div>
 </div>
+
+<!-- Navigation Links -->
 <div>
+    <!-- Link to Advanced Search Page -->
     <a asp-action="ShowAdvSearch">Advanced Search</a>
 </div>
-
 <div>
+    <!-- Link to Return to Main List -->
     <a asp-action="Index">Back to List</a>
 </div>
-
-
-

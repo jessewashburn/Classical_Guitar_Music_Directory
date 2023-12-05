@@ -1,35 +1,52 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Meta tags for character set and responsive behavior -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Title of the page, using ViewData from the server -->
     <title>@ViewData["Title"]</title>
+
+    <!-- Stylesheets for the application -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/CGMD.styles.css" asp-append-version="true" />
 </head>
 <body>
+    <!-- Header of the page, contains navigation bar -->
     <header>
+        <!-- Bootstrap navbar for responsive navigation -->
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
+                <!-- Brand/logo link -->
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CGMD</a>
+
+                <!-- Toggle button for collapsible navbar (mobile view) -->
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+
+                <!-- Navbar links -->
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        
+                        <!-- Link to the full repertoire list -->
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Pieces" asp-action="Index">All Repertoire</a>
+                            <a asp-controller="Pieces" asp-action="Index" asp-route-clearSearch="true" class="nav-link text-dark">All Repertoire</a>
                         </li>
-                        
+
+                        <!-- Link to the search page -->
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Pieces" asp-action="ShowSearchForm">Search</a>
                         </li>
+
+                        <!-- Link to suggest new repertoire -->
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Pieces" asp-action="Create">Suggest Repertoire</a>
                         </li>
+
+                        <!-- Link to the about page -->
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="About">About</a>
                         </li>
@@ -39,18 +56,32 @@
         </nav>
     </header>
 
+    <!-- Main content area -->
     <div class="container">
         <main role="main" class="pb-3">
-            @RenderBody()
+            @RenderBody() <!-- Placeholder for the main view content -->
         </main>
     </div>
 
+    <!-- Footer of the page -->
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2023 - CGMD - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> - <a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a>
+            <div class="d-flex justify-content-between">
+                <!-- Left side: copyright and links -->
+                <div>
+                    &copy; 2023 - CGMD -
+                    <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> -
+                    <a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a>
+                </div>
+                <!-- Right side: Credit for the artwork -->
+                <div>
+                    <p class="mb-0">Pablo Picasso - <i>Guitar, Sheet Music, and Wine Glass, 1912</i></p>
+                </div>
+            </div>
         </div>
     </footer>
-    <!-- <script src="~/lib/jquery/dist/jquery.min.js"></script>  -->
+
+    <!-- Scripts for Bootstrap and custom site functionality -->
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)

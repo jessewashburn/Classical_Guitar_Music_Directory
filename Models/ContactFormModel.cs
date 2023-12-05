@@ -1,8 +1,11 @@
 ﻿namespace CGMD.Models
 {
+    /// <summary>
+    /// Represents the model for a contact form.
+    /// Includes properties for the user's name, email, subject line, and message content.
+    /// </summary>
     public class ContactFormModel
     {
-        // Properties of the contact form model
         public string Name { get; set; }
         public string Email { get; set; }
         public string SubjectLine { get; set; }

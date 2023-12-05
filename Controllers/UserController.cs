@@ -3,9 +3,19 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CGMD.Controllers
 {
+    /// <summary>
+    /// Controller responsible for handling user-related actions.
+    /// </summary>
     public class UserController : Controller
     {
-
+        /// <summary>
+        /// Handles the creation of a new user.
+        /// </summary>
+        /// <param name="user">The user object to be created.</param>
+        /// <returns>
+        /// Redirects to the index action of the Home controller if the user is successfully created.
+        /// Returns to the same view with validation errors if the model state is invalid.
+        /// </returns>
         [HttpPost]
         public IActionResult Create(User user)
         {
