@@ -1,0 +1,119 @@
+﻿@model CGMD.Models.Piece
+
+@{
+    // Set the title of the page to 'Suggest Repertoire'
+    ViewData["Title"] = "Suggest Repertoire";
+}
+
+<!-- Heading for the page -->
+<h1>Suggest Repertoire</h1>
+
+<!-- Instructions for users -->
+<h6>Please enter repertoire information. Our team will review the work and enter it into the database if applicable.</h6>
+<hr />
+
+<!-- Form for suggesting a new repertoire piece -->
+<div class="row">
+    <div class="col-md-4">
+        <!-- Form for posting new repertoire suggestions -->
+        <form asp-action="PostConf">
+            <!-- Validation summary for the entire model -->
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <!-- Composer input field -->
+            <div class="form-group">
+                <label asp-for="Composer" class="control-label">Composer</label>
+                <input asp-for="Composer" class="form-control" />
+                <span asp-validation-for="Composer" class="text-danger"></span>
+            </div>
+
+            <!-- Year of Birth input field -->
+            <div class="form-group">
+                <label asp-for="YOB" class="control-label">Year of Birth</label>
+                <input asp-for="YOB" class="form-control" />
+                <span asp-validation-for="YOB" class="text-danger"></span>
+            </div>
+
+            <!-- Year of Death input field -->
+            <div class="form-group">
+                <label asp-for="YOD" class="control-label">Year of Death</label>
+                <input asp-for="YOD" class="form-control" />
+                <span asp-validation-for="YOD" class="text-danger"></span>
+            </div>
+
+            <!-- Nationality input field -->
+            <div class="form-group">
+                <label asp-for="Nation" class="control-label">Nationality</label>
+                <input asp-for="Nation" class="form-control" />
+                <span asp-validation-for="Nation" class="text-danger"></span>
+            </div>
+
+            <!-- Title input field -->
+            <div class="form-group">
+                <label asp-for="Work" class="control-label">Title</label>
+                <input asp-for="Work" class="form-control" />
+                <span asp-validation-for="Work" class="text-danger"></span>
+            </div>
+
+            <!-- Tags input field -->
+            <div class="form-group">
+                <label asp-for="Tags" class="control-label">Tags</label>
+                <input asp-for="Tags" class="form-control" />
+                <span asp-validation-for="Tags" class="text-danger"></span>
+            </div>
+
+            <!-- Instrumentation input field -->
+            <div class="form-group">
+                <label asp-for="Inst" class="control-label">Instrumentation</label>
+                <input asp-for="Inst" class="form-control" />
+                <span asp-validation-for="Inst" class="text-danger"></span>
+            </div>
+
+            <!-- Key(s) input field -->
+            <div class="form-group">
+                <label asp-for="keyOf" class="control-label">Key(s)</label>
+                <input asp-for="keyOf" class="form-control" />
+                <span asp-validation-for="keyOf" class="text-danger"></span>
+            </div>
+
+            <!-- Video URL input field -->
+            <div class="form-group">
+                <label asp-for="Video" class="control-label">Video URL</label>
+                <input asp-for="Video" class="form-control" />
+                <span asp-validation-for="Video" class="text-danger"></span>
+            </div>
+
+            <!-- Score URL input field -->
+            <div class="form-group">
+                <label asp-for="Score" class="control-label">Score URL</label>
+                <input asp-for="Score" class="form-control" />
+                <span asp-validation-for="Score" class="text-danger"></span>
+            </div>
+
+            <!-- Email input field (Note: There seems to be a mistake in the model property used here) -->
+            <div class="form-group">
+                <label asp-for="Score" class="control-label">Email</label>
+                <input asp-for="Score" class="form-control" />
+                <span asp-validation-for="Score" class="text-danger"></span>
+            </div>
+
+            <!-- Submit button -->
+            <br />
+            <div class="form-group">
+                <input type="submit" value="Submit" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Link to navigate back to the list of pieces -->
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<!-- Scripts section for validation -->
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

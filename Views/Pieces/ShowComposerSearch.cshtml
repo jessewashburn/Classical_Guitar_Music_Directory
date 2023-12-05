@@ -1,0 +1,28 @@
+﻿@model CGMD.Models.Piece
+
+<h4>Search works by Composer Name</h4>
+<hr />
+<div class="row">
+
+    <div class="col-md-4">
+        <form asp-action="ShowComposerResults">
+
+            <div class="form-group">
+                <label for="SearchPhrase" class="control-label"></label>
+                <input name="SearchPhrase" class="form-control" />
+
+            </div>
+            <br />
+            <div class="form-group">
+                <input type="submit" value="Search" class="btn btn-primary" />
+            </div>
+            <br>
+        </form>
+    </div>
+
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

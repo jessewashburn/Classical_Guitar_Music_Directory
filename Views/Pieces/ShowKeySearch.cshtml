@@ -1,0 +1,63 @@
+﻿@model CGMD.Models.Piece
+
+<h4>Search works by key</h4>
+<hr />
+<div class="row">
+    
+    <div class="col-md-4">
+        <form asp-action="ShowKeyResults">
+            <br>
+    
+           <select name="SearchPhrase">
+    <option value="">Select a Key</option>
+    <option value="c major">C major</option>
+    <option value="c minor">C minor</option>
+    <option value="c# major |db major">C#/Db major</option>
+    <option value="c# minor |db minor">C#/Db minor</option>
+    <option value="d major">D major</option>
+    <option value="d minor">D minor</option>
+    <option value="d# major |Eb major">D#/Eb major</option>
+    <option value="D# major |Eb minor">D#/Eb minor</option>
+    <option value="e major">E major</option>
+    <option value="e minor">E minor</option>
+    <option value="f major">F major</option>
+    <option value="f minor">F minor</option>
+    <option value="f# major |gb major">F#/Gb major</option>
+    <option value="f# minor |gb minor">F#/Gb minor</option>
+    <option value="g major">G major</option>
+    <option value="g minor">G minor</option>
+    <option value="g# major |ab major">G#/Ab major</option>
+    <option value="g# major |ab minor">G#/Ab minor</option>
+    <option value="a major">A major</option>
+    <option value="a minor">A minor</option>
+    <option value="a# major |bb major">A#/Bb major</option>
+    <option value="a# minor |bb minor">A#/Bb minor</option>
+    <option value="b major">B major</option>
+    <option value="b minor">B minor</option>
+    <option value="c">C</option>
+    <option value="c#">C#/Db</option>
+    <option value="d">D</option>
+    <option value="d#">D#/Eb</option>
+    <option value="e">E</option>
+    <option value="f">F</option>
+    <option value="f#">F#/Gb</option>
+    <option value="g">G</option>
+    <option value="g#">G#/Ab</option>
+    <option value="a">A</option>
+    <option value="a#">A#/Bb</option>
+    <option value="b">B</option>
+       </select><br>
+           <br>
+            <div class="form-group">
+                <input type="submit" value="Search" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+    
+</div>
+
+<div>
+    <br>
+    <a asp-action="Index">Back to List</a>
+</div>
+

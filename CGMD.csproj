@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\HomeController1.cs" />
+    <Compile Remove="Controllers\HomeController2.cs" />
+    <Compile Remove="Models\Class.cs" />
+    <Compile Remove="Models\PieceIndexViewModel.cs" />
+    <Compile Remove="Views\Home\About.cshtml.cs" />
+    <Compile Remove="Views\Home\Contact.cshtml.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Views\Home\About.razor" />
+    <Content Remove="Views\Home\Component.razor" />
+    <Content Remove="Views\Home\Confirmation - Copy.cshtml" />
+    <Content Remove="Views\Home\Confirmation.cshtml" />
+    <Content Remove="Views\Home\PostConf.cshtml" />
+    <Content Remove="Views\Pieces\Delete.cshtml" />
+    <Content Remove="Views\Pieces\Edit.cshtml" />
+    <Content Remove="Views\Pieces\ShowComposerSearch.cshtml" />
+    <Content Remove="Views\Pieces\ShowDateSearch.cshtml" />
+    <Content Remove="Views\Pieces\ShowInstSearch.cshtml" />
+    <Content Remove="Views\Pieces\ShowKeySearch.cshtml" />
+    <Content Remove="Views\Pieces\ShowNationSearch.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.10">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\ServiceDependencies\" />
+  </ItemGroup>
+
+</Project>

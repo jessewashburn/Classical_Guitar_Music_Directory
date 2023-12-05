@@ -1,0 +1,29 @@
+﻿@model CGMD.Models.Piece
+
+<h4>Search works by Composer Nationality</h4>
+<hr />
+<div class="row">
+
+    <div class="col-md-4">
+        <form asp-action="ShowNationResults">
+
+           <br>
+             <select name="SearchPhrase">
+                <option value="">Select Nationality</option>
+                <option value="Spain">Spain</option>
+                <option value="Italy">Italy</option>
+                <option value="Austria">Austria</option>
+
+            </select><br>
+            <br>
+            <div class="form-group">
+                <input type="submit" value="Search" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+

@@ -1,0 +1,77 @@
+﻿@model IEnumerable<CGMD.Models.Piece>
+
+@{
+    // Setting the page title and retrieving sort order and search phrase from ViewData
+    ViewData["Title"] = "Index";
+    var currentSort = ViewData["CurrentSort"] as string;
+    var searchPhrase = ViewData["SearchPhrase"] as string;
+}
+
+<!-- Title for the repertoire list -->
+<h2>Repertoire</h2>
+
+<!-- Sort functionality: Allows users to sort the list of pieces -->
+<div class="d-flex justify-content-end">
+    <form asp-controller="Pieces" asp-action="Index" method="get" class="form-inline">
+        <!-- Retains the current search phrase in subsequent sorts -->
+        @if (!string.IsNullOrEmpty(searchPhrase))
+        {
+            <input type="hidden" name="searchPhrase" value="@searchPhrase" />
+        }
+
+        <!-- Dropdown for choosing the sort order -->
+        <div class="form-group">
+            <label for="sortOrder" class="mr-2">Sort by:</label>
+            <select name="sortOrder" class="form-control form-control-sm" id="sortOrderSelect" onchange="this.form.submit()" style="max-width: 200px;">
+                <option value="YOB_DESC">Reverse Chronological</option>
+                <option value="YOB_ASC">Chronological</option>
+                <option value="Composer_ASC">Composer Last Name A-Z</option>
+                <option value="Composer_DESC">Composer Last Name Z-A</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary btn-sm ml-2">Sort</button>
+    </form>
+</div>
+
+<!-- Displaying the search phrase if one is present -->
+@if (!string.IsNullOrEmpty(searchPhrase))
+{
+    <div class="search-message">
+        Showing results for '<strong>@searchPhrase</strong>'
+    </div>
+}
+
+<!-- Table displaying the list of pieces -->
+<table class="table">
+    <thead>
+        <tr>
+            <th>Composer</th>
+            <th>Year of Birth</th>
+            <th>Title</th>
+            <th></th> <!-- Placeholder for Details link or other actions -->
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Looping through each piece and displaying its details -->
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Composer)</td>
+                <td>@Html.DisplayFor(modelItem => item.YOB)</td>
+                <td>@Html.DisplayFor(modelItem => item.Work)</td>
+                <td><a asp-action="Details" asp-route-id="@item.ID">Details</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    // Script to set the sort order in the dropdown based on the current sort order
+    document.addEventListener("DOMContentLoaded", function () {
+        var currentSort = '@ViewData["CurrentSort"]';
+        var sortOrderSelect = document.getElementById("sortOrderSelect");
+        if (currentSort) {
+            sortOrderSelect.value = currentSort;
+        }
+    });
+</script>
