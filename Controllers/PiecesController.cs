@@ -36,7 +36,7 @@ namespace CGMD.Controllers
         /// <param name="searchPhrase">The search term to filter pieces.</param>
         /// <param name="clearSearch">A flag indicating whether to clear the current search.</param>
         /// <returns>The Index view populated with a list of pieces.</returns>
-        public async Task<IActionResult> Index(string sortOrder, string searchPhrase = "", bool clearSearch = false)
+        public async Task<IActionResult> Index(string sortOrder, string searchPhrase = "", int page = 1, int pageSize = 200, bool clearSearch = false)
         {
             if (clearSearch)
             {
@@ -63,20 +63,25 @@ namespace CGMD.Controllers
             }
             ViewData["SearchPhrase"] = searchModel?.searchPhrase;
 
-            // Build and execute the query
             IQueryable<Piece> query = _context.Piece.AsQueryable();
 
             if (!string.IsNullOrEmpty(searchModel?.searchPhrase))
             {
                 var searchTerms = searchModel.searchPhrase.Split(' ', StringSplitOptions.RemoveEmptyEntries);
                 query = searchTerms.Aggregate(query, (currentQuery, term) =>
-                    currentQuery.Where(p => p.Work.Contains(term) || p.Composer.Contains(term) || (p.Tags != null && p.Tags.Contains(term))));
+                    currentQuery.Where(p => p.Title.Contains(term) || p.Composer.Contains(term) || (p.Tags != null && p.Tags.Contains(term))));
             }
 
             query = ApplySorting(query, sortOrder);
 
-            var result = await query.ToListAsync();
-            return View(result);
+            int totalItems = await query.CountAsync();
+            int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+            ViewData["CurrentPage"] = page;
+            ViewData["TotalPages"] = totalPages;
+
+            var pieces = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
+            return View(pieces);
         }
 
 
@@ -152,8 +157,8 @@ namespace CGMD.Controllers
 
             // Perform the search and pass the result to the view
             var result = await _context.Piece
-                .Where(p => p.Work.Contains(searchPhrase) || p.Composer.Contains(searchPhrase) || (p.Tags != null && p.Tags.Contains(searchPhrase)))
-                .ToListAsync();
+                .Where(p => p.Title.Contains(searchPhrase) || p.Composer.Contains(searchPhrase) 
+                || (p.Tags != null && p.Tags.Contains(searchPhrase))).ToListAsync();
 
             return View("Index", result);
         }
@@ -249,7 +254,7 @@ namespace CGMD.Controllers
             {
                 // Split the search phrases by space to search for each word
                 var searchPhrases = model.Title.Split(' ');
-                query = query.Where(p => p.Work.Contains(model.Title) ||
+                query = query.Where(p => p.Title.Contains(model.Title) ||
                                     p.Composer.Contains(model.Title) ||
                                     (p.Tags != null && p.Tags.Contains(model.Title)));
             }
@@ -268,12 +273,9 @@ namespace CGMD.Controllers
             if (!string.IsNullOrEmpty(model.Composer))
                 query = query.Where(p => p.Composer.Contains(model.Composer));
 
-            // Apply additional filter for year of birth range
-            if (int.TryParse(model.MinYOB, out var minYOB) && int.TryParse(model.MaxYOB, out var maxYOB))
+            if (model.MinYOB.HasValue && model.MaxYOB.HasValue)
             {
-                // Assuming YOB is stored as a string, we need to compare as integers.
-                // We convert the string YOB to an integer before the comparison.
-                query = query.Where(p => p.YOB != null && EF.Functions.Like(p.YOB, $"{minYOB}%") && EF.Functions.Like(p.YOB, $"{maxYOB}%"));
+                query = query.Where(p => p.YOB >= model.MinYOB.Value && p.YOB <= model.MaxYOB.Value);
             }
 
             // Search by instrument
@@ -283,29 +285,10 @@ namespace CGMD.Controllers
                 query = query.Where(p => !string.IsNullOrEmpty(p.Inst) && p.Inst.ToLower().Contains(searchInst));
             }
 
-            // Search by key
-            if (!string.IsNullOrEmpty(model.keyOf))
-            {
-                var searchKey = model.keyOf.Trim().ToLower();
-                query = query.Where(p => p.keyOf != null && p.keyOf.ToLower().Contains(searchKey));
-            }
-
             // Search by nationality
             if (!string.IsNullOrEmpty(model.Nation))
             {
                 query = query.Where(p => !string.IsNullOrEmpty(p.Nation) && p.Nation.Contains(model.Nation));
-            }
-
-            // Filter by score availability
-            if (model.HasScore)
-            {
-                query = query.Where(p => !string.IsNullOrEmpty(p.Score));
-            }
-
-            // Filter by recording availability
-            if (model.HasRecording)
-            {
-                query = query.Where(p => !string.IsNullOrEmpty(p.Video));
             }
 
             return query;

@@ -2,7 +2,7 @@
 
 @{
     // Set the title of the page based on the piece's work
-    ViewData["Title"] = Model.Work;
+    ViewData["Title"] = Model.Title;
 }
 
 <!-- Header displaying 'Details' -->
@@ -48,15 +48,7 @@
             Title
         </dt>
         <dd class="col-sm-10">
-            <em>@Html.DisplayFor(model => model.Work)</em>
-        </dd>
-
-        <!-- Tags detail -->
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Tags)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Tags)
+            <em>@Html.DisplayFor(model => model.Title)</em>
         </dd>
 
         <!-- Instrumentation detail -->
@@ -67,30 +59,15 @@
             @Html.DisplayFor(model => model.Inst)
         </dd>
 
-        <!-- Key(s) detail -->
+        <!-- Tags detail -->
         <dt class="col-sm-2">
-            Key(s)
+            @Html.DisplayNameFor(model => model.Tags)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.keyOf)
+            @Html.DisplayFor(model => model.Tags)
         </dd>
 
-        <!-- Video URL detail -->
-        <dt class="col-sm-2">
-            Video URL
-        </dt>
-        <dd class="col-sm-10">
-            <a href="@Html.DisplayFor(model => model.Video)" target="_blank">@Html.DisplayFor(model => model.Video)</a>
-        </dd>
 
-        <!-- Score URL detail -->
-        <dt class="col-sm-2">
-            Score URL
-        </dt>
-        <dd class="col-sm-10">
-            <a href="@Html.DisplayFor(model => model.Score)" target="_blank">@Html.DisplayFor(model => model.Score)</a>
-        </dd>
-    </dl>
 </div>
 
 <!-- Link to navigate back to the list of pieces -->

@@ -50,17 +50,12 @@
 
             <!-- Title input field -->
             <div class="form-group">
-                <label asp-for="Work" class="control-label">Title</label>
-                <input asp-for="Work" class="form-control" />
-                <span asp-validation-for="Work" class="text-danger"></span>
+                <label asp-for="Title" class="control-label">Title</label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
             </div>
 
-            <!-- Tags input field -->
-            <div class="form-group">
-                <label asp-for="Tags" class="control-label">Tags</label>
-                <input asp-for="Tags" class="form-control" />
-                <span asp-validation-for="Tags" class="text-danger"></span>
-            </div>
+
 
             <!-- Instrumentation input field -->
             <div class="form-group">
@@ -69,33 +64,21 @@
                 <span asp-validation-for="Inst" class="text-danger"></span>
             </div>
 
-            <!-- Key(s) input field -->
+           <!-- Tags input field -->
             <div class="form-group">
-                <label asp-for="keyOf" class="control-label">Key(s)</label>
-                <input asp-for="keyOf" class="form-control" />
-                <span asp-validation-for="keyOf" class="text-danger"></span>
+                <label asp-for="Tags" class="control-label">Tags</label>
+                <input asp-for="Tags" class="form-control" />
+                <span asp-validation-for="Tags" class="text-danger"></span>
             </div>
 
-            <!-- Video URL input field -->
-            <div class="form-group">
-                <label asp-for="Video" class="control-label">Video URL</label>
-                <input asp-for="Video" class="form-control" />
-                <span asp-validation-for="Video" class="text-danger"></span>
-            </div>
 
-            <!-- Score URL input field -->
+            <!-- Email input field (Note: Needs building) 
             <div class="form-group">
-                <label asp-for="Score" class="control-label">Score URL</label>
-                <input asp-for="Score" class="form-control" />
-                <span asp-validation-for="Score" class="text-danger"></span>
+                <label asp-for="Email" class="control-label">Email</label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-
-            <!-- Email input field (Note: There seems to be a mistake in the model property used here) -->
-            <div class="form-group">
-                <label asp-for="Score" class="control-label">Email</label>
-                <input asp-for="Score" class="form-control" />
-                <span asp-validation-for="Score" class="text-danger"></span>
-            </div>
+            -->
 
             <!-- Submit button -->
             <br />
